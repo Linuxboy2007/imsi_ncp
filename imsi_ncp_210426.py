@@ -10,7 +10,7 @@ import numpy as np
 from numpy import linalg as LA
 import matplotlib.pyplot as plt
 
-# import src.utilities as util
+import src.utilities as util
 import src.iterative as iterative
 import src.problems as prb
 
@@ -20,21 +20,22 @@ warnings.filterwarnings("ignore")
 warnings.simplefilter('ignore', SyntaxWarning)
 
 m = 2048
-n = 2048
+n = 1024
 # A, f, u_ext = prb.phillips(m)
 
-# u_ext, f, K, bn, Sdiag, A, fn, _, _ = prb.phillipsmod(m, n, 1e-05)
-# x = np.linspace(-3,3, n)
+u_ext, f, K, bn, Sdiag, A, fn, _, _ = prb.phillipsmod(m, n, 1e-05)
+x = np.linspace(-3,3, n)
+u_ext = u_ext.reshape((-1,1))
+f = f.reshape((-1,1))
+fn = fn.reshape((-1,1))
+delta = LA.norm(fn-f)
+# A, fn, u_ext, f = prb.shawmod(m)
+# x = np.linspace(-np.pi/2,np.pi/2, m)
+# n = m
 # u_ext = u_ext.reshape((-1,1))
 # f = f.reshape((-1,1))
 # fn = fn.reshape((-1,1))
 # delta = LA.norm(f-fn)
-A, fn, u_ext, f = prb.shawmod(n)
-x = np.linspace(-np.pi/2,np.pi/2, n)
-u_ext = u_ext.reshape((-1,1))
-f = f.reshape((-1,1))
-fn = fn.reshape((-1,1))
-delta = LA.norm(f-fn)
 # u_ext, f, A, _, _, _, _, _, _ = prb.phillipsmod(m,n,1e-06)
 # x = np.linspace(-3,3, n)
 # u_ext = u_ext.reshape((-1,1))
@@ -43,8 +44,8 @@ delta = LA.norm(f-fn)
 # fn, delta = util.add_noise(f, noise_value, 1)
 print('Matrix size', m, n)
 
-k = 50
-k_ncp = 50
+k = 500
+k_ncp = 500
 
 tau = 1 + np.sqrt(np.finfo(np.float64).eps)
 smax_full = np.sqrt(LA.norm(A,np.inf)*LA.norm(A,1))

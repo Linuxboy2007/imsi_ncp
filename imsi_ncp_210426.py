@@ -68,8 +68,8 @@ print('Число итераций BI: %d' % itp_ncp)
 print('Время(sec): %.2f' % tk_ncp)
 Rerr_ncp = LA.norm(u_ext - xk_ncp) / LA.norm(u_ext)
 print('Относительная ошибка %.2e' % Rerr_ncp)
-lw = 0.75
-plt.plot(x, u_ext,'r', linewidth = lw, label='true')
-plt.plot(x, xk_ncp,'b--', linewidth = lw, label='x_k(NCP)')
+
+plt.plot(x, u_ext,'r', linewidth = 0.5, label='true')
+plt.plot(x, xk_ncp,'b--', linewidth = 0.75, label='x_k(NCP)')
 plt.legend(('true', 'x_k(NCP)'), loc='best')
 plt.show()

@@ -20,11 +20,17 @@ warnings.filterwarnings("ignore")
 warnings.simplefilter('ignore', SyntaxWarning)
 
 m = 2048
-n = 1024
+n = 2048
 # A, f, u_ext = prb.phillips(m)
 
-u_ext, f, K, bn, Sdiag, A, fn, _, _ = prb.phillipsmod(m, n, 1e-05)
-x = np.linspace(-3,3, n)
+# u_ext, f, K, bn, Sdiag, A, fn, _, _ = prb.phillipsmod(m, n, 1e-05)
+# x = np.linspace(-3,3, n)
+# u_ext = u_ext.reshape((-1,1))
+# f = f.reshape((-1,1))
+# fn = fn.reshape((-1,1))
+# delta = LA.norm(f-fn)
+A, fn, u_ext, f = prb.shawmod(n)
+x = np.linspace(-np.pi/2,np.pi/2, n)
 u_ext = u_ext.reshape((-1,1))
 f = f.reshape((-1,1))
 fn = fn.reshape((-1,1))
@@ -37,8 +43,8 @@ delta = LA.norm(f-fn)
 # fn, delta = util.add_noise(f, noise_value, 1)
 print('Matrix size', m, n)
 
-k = 500
-k_ncp = 500
+k = 50
+k_ncp = 50
 
 tau = 1 + np.sqrt(np.finfo(np.float64).eps)
 smax_full = np.sqrt(LA.norm(A,np.inf)*LA.norm(A,1))
@@ -57,7 +63,8 @@ print('Число итераций BI: %d' % itp)
 print('Время(sec): %.2f' % tk)
 Rerr0 = LA.norm(u_ext - xk) / LA.norm(u_ext)
 print('Относительная ошибка %.2e' % Rerr0)
-plt.plot(x, u_ext,'r', x, xk,'b--')
+plt.plot(x, u_ext,'r', linewidth = 0.5,)
+plt.plot(x, xk,'b--',  linewidth = 0.75)
 plt.legend(('true', 'x_k'), loc='best')
 plt.show()
 
@@ -74,4 +81,9 @@ print('Относительная ошибка %.2e' % Rerr_ncp)
 plt.plot(x, u_ext,'r', linewidth = 0.5, label='true')
 plt.plot(x, xk_ncp,'b--', linewidth = 0.75, label='x_k(NCP)')
 plt.legend(('true', 'x_k(NCP)'), loc='best')
+plt.show()
+
+plt.plot(x, xk,'r', linewidth = 0.75)
+plt.plot(x, xk_ncp,'b--', linewidth = 0.75)
+plt.legend(('xk', 'x_k(NCP)'), loc='best')
 plt.show()

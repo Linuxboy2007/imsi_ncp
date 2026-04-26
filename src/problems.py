@@ -80,6 +80,80 @@ def shaw(n):
     
     return A, b, x
 
+def shawmod(n, errorlevel = 1e-05):
+    """
+    SHAW Test problem: one-dimensional image restoration model.
+    
+    Parameters
+    ----------
+    n : int
+        The order of the problem, must be even.
+    
+    Returns
+    -------
+    A : ndarray
+        The n x n matrix representing the discretized kernel.
+    b : ndarray
+        The right-hand side vector (A @ x).
+    x : ndarray
+        The solution vector.
+    
+    Notes
+    -----
+    Discretization of a first kind Fredholm integral equation with
+    [-pi/2, pi/2] as both integration intervals.
+    """
+    
+    # Check input
+    if n % 2 != 0:
+        raise ValueError('The order n must be even')
+    
+    # Initialization
+    h = np.pi / n
+    A = np.zeros((n, n))
+    
+    # Compute the matrix A
+    co = np.cos(-np.pi/2 + np.arange(0.5,n) * h)
+    psi = np.pi * np.sin(-np.pi/2 + np.arange(0.5,n) * h)
+    
+    for i in range(n//2):
+        for j in range(i, n - i):
+            ss = psi[i] + psi[j]
+            if ss == 0:
+                # Handle the singularity when ss=0 (using limit as u->0)
+                A[i, j] = (co[i] + co[j])**2
+            else:
+                A[i, j] = ((co[i] + co[j]) * np.sin(ss) / ss)**2
+            # A[i, j] = ((co[i] + co[j]) * np.sin(ss) / ss)**2
+            A[n - j - 1, n - i - 1] = A[i, j]
+        A[i, n - i - 1] = (2 * co[i])**2
+    
+    A = A + np.triu(A, 1).T
+    A = A * h
+    
+    # Compute the vectors x and b
+    a1 = 2; c1 = 6; t1 =  0.8
+    a2 = 1; c2 = 2; t2 = -0.5
+    
+    t = -np.pi/2 + np.arange(0.5,n) * h
+    x = (a1 * np.exp(-c1 * (t - t1)**2) + a2 * np.exp(-c2 * (t - t2)**2))
+    f = A @ x
+    
+    Sdiag = errorlevel * np.sqrt(f)
+    zero_indices = f == 0
+    if np.any(zero_indices):
+        Sdiag[zero_indices] = np.finfo(float).eps
+
+    # Add errors to ystar to obtain y
+    y = f + Sdiag * np.random.randn(n)
+
+    # Compute the matrix and right-hand side for the scaled problem
+    Sinv = diags(1 / Sdiag, 0, shape=(n, n))
+    A = Sinv @ A
+    b = Sinv @ y
+    
+    return A, b, x, y
+
 def gravity(n, example=None, a=None, b=None, d=None):
     """
     GRAVITY Test problem: 1-D gravity surveying model problem

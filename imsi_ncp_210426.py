@@ -49,6 +49,7 @@ omega_ncp = smax_full/k_ncp
 all calculations are performed in double precision
 '''
 xk, it, itp, tk, tp = iterative.imsi_bis(A, fn, omega, delta, 1e-01, tau)
+print('Discrepancy principle')
 print('Неявный метод простых итераций на основе псевдообращения')
 print('Двойная точность')
 print('Число итераций: %d' % it)
@@ -61,7 +62,8 @@ plt.legend(('true', 'x_k'), loc='best')
 plt.show()
 
 xk_ncp, it_ncp, itp_ncp, tk_ncp, tp_ncp = iterative.imsi_bisncp(A, fn, omega_ncp, 1e-01)
-print('Неявный метод простых итераций на основе псевдообращения (ncp)')
+print('normalized cumulative periodogram')
+print('Неявный метод простых итераций на основе псевдообращения ')
 print('Двойная точность')
 print('Число итераций: %d' % it_ncp)
 print('Число итераций BI: %d' % itp_ncp)

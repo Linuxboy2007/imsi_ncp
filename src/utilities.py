@@ -13,23 +13,10 @@ import matplotlib.pyplot as plt
 
 def add_noise(f, noise_level,tn = 1):
     if tn == 1:
-        # rng = np.random.default_rng(42)
         noise = np.random.randn(f.shape[0],1)
-        # noise = rng.standard_normal([f.shape[0],1])
         noise = (LA.norm(f)*noise_level*noise)/LA.norm(noise)
         fn = f + noise
         delta = LA.norm(f - fn)
-        
-        # noise = np.random.randn(f.shape[0],100)
-        # noise = (noise/LA.norm(noise))*LA.norm(f)*noise_level
-        # noise = noise.mean(axis=1).reshape(f.shape[0],1)
-        # fn = f + 100*noise
-        # fn = fn.mean(axis=1).reshape(f.shape[0],1)
-        # delta = LA.norm(f - fn)
-        
-        # noise = noise_level*np.random.randn(f.shape[0],1)
-        # fn = f + noise
-        # delta = LA.norm(f - fn)
     else:
         noise = 2* np.random.rand(f.shape[0], 1) - 1
         fn = f + noise_level*LA.norm(f)*(noise/LA.norm(noise))

@@ -43,7 +43,7 @@ def ncp(r):
 
     return cp, dist
 
-def ncp_plot(r, lv = 95):
+def ncp_plot(r, name, lv = 95):
     cp, dist = ncp(r)
     q = cp.shape[0]
     
@@ -57,7 +57,7 @@ def ncp_plot(r, lv = 95):
     xp = wn + kq
     xm = wn - kq
     plt.plot(xq, xm,'k--',xq,xp,'k--', xq, wn,'r-', xq, cp,'b-')
-    plt.title('normalized cumulative periodogram')
+    plt.title('normalized cumulative periodogram '  +  name)
     plt.show()
     
     # return cp

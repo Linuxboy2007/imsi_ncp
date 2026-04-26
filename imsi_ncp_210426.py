@@ -19,29 +19,30 @@ import warnings
 warnings.filterwarnings("ignore")
 warnings.simplefilter('ignore', SyntaxWarning)
 
-m = 2048
-n = 1024
+# n = 1024
 # A, f, u_ext = prb.phillips(m)
 
-u_ext, f, K, bn, Sdiag, A, fn, _, _ = prb.phillipsmod(m, n, 1e-05)
-x = np.linspace(-3,3, n)
-u_ext = u_ext.reshape((-1,1))
-f = f.reshape((-1,1))
-fn = fn.reshape((-1,1))
-delta = LA.norm(fn-f)
-# A, fn, u_ext, f = prb.shawmod(m)
-# x = np.linspace(-np.pi/2,np.pi/2, m)
-# n = m
-# u_ext = u_ext.reshape((-1,1))
-# f = f.reshape((-1,1))
-# fn = fn.reshape((-1,1))
-# delta = LA.norm(f-fn)
-# u_ext, f, A, _, _, _, _, _, _ = prb.phillipsmod(m,n,1e-06)
+m = 2048
+n = 1024
+# u_ext, f, K, bn, Sdiag, A, fn, _, _ = prb.phillipsmod(m, n, 1e-05)
 # x = np.linspace(-3,3, n)
 # u_ext = u_ext.reshape((-1,1))
 # f = f.reshape((-1,1))
-# noise_value = 1e-05
-# fn, delta = util.add_noise(f, noise_value, 1)
+# fn = fn.reshape((-1,1))
+# delta = LA.norm(fn-bn)
+# A, fn, u_ext, f = prb.shawmod(m)
+# x = np.linspace(-np.pi/2,np.pi/2, m)
+# n = m
+# u_ext = u_ext.reshape((-1,1)) 
+# f = f.reshape((-1,1))
+# fn = fn.reshape((-1,1))
+# delta = LA.norm(f-fn)
+u_ext, f, A, _, _, _, _, _, _ = prb.phillipsmod(m,n,1e-06)
+x = np.linspace(-3,3, n)
+u_ext = u_ext.reshape((-1,1))
+f = f.reshape((-1,1))
+noise_value = 1e-05
+fn, delta = util.add_noise(f, noise_value, 1)
 print('Matrix size', m, n)
 
 k = 500
@@ -88,3 +89,7 @@ plt.plot(x, xk,'r', linewidth = 0.75)
 plt.plot(x, xk_ncp,'b--', linewidth = 0.75)
 plt.legend(('xk', 'x_k(NCP)'), loc='best')
 plt.show()
+
+util.ncp_plot(fn - A@xk,'xk')
+util.ncp_plot(fn - A@xk_ncp, 'ncp')
+

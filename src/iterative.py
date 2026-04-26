@@ -73,12 +73,12 @@ def imsi_bisncp(A, f, omega, epsp):
     q = np.floor(m / 2).astype(int) if np.isrealobj(f) else m - 1
     kq = 1.36*q**(-0.5);
     # kq = 1.63*q**(-0.5);
-    print('kq: %.3e' % kq)
+    # print('kq: %.3e' % kq)
     while err >= kq:
         r = f - A@xk
         xk = xk + Ua@r
         cp, err = util.ncp(r)
-        print('err: %.3e' % err)
+        # print('err: %.3e' % err)
         it = it +1
     xk = xk.reshape(-1,1)
     end = time.time() - start
